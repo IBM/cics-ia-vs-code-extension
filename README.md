@@ -44,16 +44,16 @@ CICS IA tool helps with runtime data collection for CICS Application. The CICS I
    - [Procedure](#procedure)
 
 ## Privacy Notice for feedback
-CICS Interdependency Analyzer Extension is provided free of charge, but we ask you to provide us feedback via the various means available, such as submitting an [issue in our GitHub repository](https://github.com/IBM/db2forzosdeveloperextension-about/issues), submitting review comments in the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ibm.db2forzosdeveloperextension#review-details).
+CICS Interdependency Analyzer Extension is provided free of charge, but we ask you to provide us feedback via the various means available, such as submitting an [issue in our GitHub repository](https://github.com/IBM/cics-ia-vs-code-extension/issues), submitting review comments in the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ibm.cics-ia-extension-for-zowe#review-details).
 
 You can also read [IBM's General Privacy Statement](https://www.ibm.com/privacy/us/en/) to learn more about our policies.
 
 ## Software Requirements
 Ensure that you meet the following prerequisites before you use the extension:
 
-- Install VSCode
-- Install Zowe Explorer V2
-- Install Zowe CICS Explorer
+- Install VSCode 1.93.0 or earlier versions
+- Install Zowe Explorer 2.18.0 or earlier versions
+- Install Zowe CICS Explorer 2.3.7 or earlier versions
 - REST API preconfigured and running in the mainframe machine. Refer <https://www.ibm.com/support/pages/node/6378374> for REST API configuration for CICS IA.
 
 ## CICS IA Features
