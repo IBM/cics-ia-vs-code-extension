@@ -9,9 +9,11 @@ CICS IA tool helps with runtime data collection for CICS Application. The CICS I
 - [CICS IA Features](#cics-ia-features)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
+   - [Connecting using a CICS IA profile](#connecting-using-a-cics-ia-profile) 
    - [Loading CICS IA profiles from CICS profiles](#loading-cics-ia-profiles-from-cics-profiles)
-   - [Create New CICS IA Profile](#create-new-cics-ia-profile)
-   - [Update CICS IA Profile](#update-cics-ia-profile)
+   - [Create or Update CICS IA Profile](#create-or-update-cics-ia-profile)
+   - [Delete CICS IA Profile](#delete-cics-ia-profile)
+- [CICS IA Collector View](#cics-ia-collector-view)
 - [CICS IA Profile](#cics-ia-profile)
 - [Collection IDs](#collection-ids)
 - [Regions](#regions)
@@ -28,9 +30,13 @@ CICS IA tool helps with runtime data collection for CICS Application. The CICS I
     - [Reports Menu](#reports-menu)
 - [Program details view](#program-details-view)
 - [Show Resources view](#show-resources-view)
+- [Resource Usage Visualization view](#resource-usage-visualization-view)
+- [Comparision of Resources](#comparision-of-resources)
+- [Program Flow Editor](#program-flow-editor)
 - [Used By view](#used-by-view)
 - [Uses view](#uses-view)
 - [Affinities view](#affinities-view)
+- [Affinities Report view](#affinities-report-view)
 - [Threadsafe Report view](#threadsafe-reports-view)
    - [Program Summary](#program-summary)
    - [Program Details](#program-details)
@@ -41,7 +47,9 @@ CICS IA tool helps with runtime data collection for CICS Application. The CICS I
 - [Command Flow Diagram view](#command-flow-diagram-view)
 - [Report Browser view](#report-browser-view)
 - [Creating a report of threadsafe issues](#creating-a-report-of-threadsafe-issues)
-   - [Procedure](#procedure)
+   - [ThreadSafe Report Procedure](#threadsafe-report-procedure)
+- [Creating an affinity report](#creating-an-affinity-report)
+   - [Affinity Report Procedure](#affinity-report-procedure)
 
 ## Privacy Notice for feedback
 CICS Interdependency Analyzer Extension is provided free of charge, but we ask you to provide us feedback via the various means available, such as submitting an [issue in our GitHub repository](https://github.com/IBM/cics-ia-vs-code-extension/issues), submitting review comments in the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ibm.cics-ia-extension-for-zowe#review-details).
@@ -52,8 +60,8 @@ You can also read [IBM's General Privacy Statement](https://www.ibm.com/privacy/
 Ensure that you meet the following prerequisites before you use the extension:
 
 - Install VSCode 1.93.0 or earlier versions
-- Install Zowe Explorer 2.18.0 or earlier versions
-- Install Zowe CICS Explorer 2.3.7 or earlier versions
+- Install Zowe Explorer v3
+- Install Zowe CICS Explorer v3
 - REST API preconfigured and running in the mainframe machine. Refer <https://www.ibm.com/support/pages/node/6378374> for REST API configuration for CICS IA.
 
 ## CICS IA Features
@@ -100,15 +108,41 @@ Execute the following steps to install the extension:
 
 ## Getting Started
 Follow the steps below to configure Zowe CICS IA Explorer.
-- Loading the CICS IA Profiles from CICS Profiles
-- Create a New CICS IA Profile
-- Update CICS IA Profile
+
+## Connecting using a CICS IA profile
+
+CICS IA (CICS Interdependency Analyzer) profiles are specialized Zowe profiles. They manage connections to a CICS IA DB2 server and a CICS IA REST API server. 
+
+This allows users to access and interact with CICS IA data. CICS IA profiles are stored with other Zowe profiles in team configuration JSON files, making them easily shareable and manageable within development teams.
+A CICS IA profile is a JSON object with specific properties that define the connection to the CICS IA DB2 database and the REST API. Key properties include:
+
+The cicsia profile defines a connection with specific properties:
+    
+**Type**: Must be `"cicsia"`.
+
+## Properties
+The configuration is defined by an object with the following properties:
+
+| Property                | Description                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| `db2HostName`          | The hostname for the DB2 server.                                            |
+| `db2PortNumber`        | The port number for the DB2 server.                                         |
+| `db2Location`          | The DB2 location name.                                                      |
+| `iaApiHostName`        | The hostname for the CICS IA REST API.                                      |
+| `iaApiPortNumber`      | The port for the CICS IA REST API.                                          |
+| `schema`               | The name of the DB2 schema containing CICS IA data.                         |
+| `name`                 | A name for the existing CICS profile you're connecting to.                  |
+| `user`                 | The username for authenticating to the DB2 server.                          |
+| `password`             | The password for the DB2 user.                                              |
+| `rejectUnauthorized`   | A boolean (`true` or `false`) to control whether self-signed certificates are rejected. |
+
+
+Similar to other Zowe profiles, CICS IA profiles support inheritance. This means they can inherit common properties from a base profile, which reduces redundancy and ensures consistency across multiple configurations.
 
 ## Loading CICS IA profiles from CICS profiles
 - By Default, CICS profiles from CICS VS Code extension is loaded into CICS IA View.
-- Below is the Configuration screen for creating a new CICS profile.
-
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.006.png)
+- Find link for creating a new CICS profile Create CICS Profile
+    https://marketplace.visualstudio.com/items?itemName=Zowe.cics-extension-for-zowe#connecting-using-a-cics-profile
 
 - After Creating a new CICS Profile refresh CICS IA view, we should be able to see the newly created CICS profile getting loaded automatically under CICS IA view as well.
 
@@ -122,25 +156,135 @@ Follow the steps below to configure Zowe CICS IA Explorer.
 
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.009.png)
 
-## Create New CICS IA Profile 
+## Create or Update CICS IA Profile 
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.010.png)
+1. In Zowe Explorer, expand the CICS IA view and select the ‘+’ button in the existing CICS profile.
+2. Select Manage CICS IA Profile.
 
-- Click on the ‘+’ icon next to existing CICS IA profile and in editor window a panel opens. Provide the Hostname, Port, and Protocol of server where IA Rest APIs are running. 
-- Click on the Update Profile button. 
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/manage_profiles.png)
 
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.011.png)
+3. Select Create or Update CICS IA Profile.
 
-- Once the IA profile is created, CICS IA view will start loading the data from the DB Schema (Schema details are configured on Rest API WebSphere server running on mainframe) and creates the tree hierarchy inside the CICS IA Profile.
-## Update CICS IA Profile 
-  ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.012.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_delete_profile.png)
 
-- Click on the yellow highlighted icon and in right side editor window a panel opens with existing profile details. Update the details that you want to alter.
-- Click on the Update Profile button. 
+4. Add a new cicsia profile type within the profile section in a team configuration file (zowe.config.json). 
+Below is the example:
 
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.013.png)
+    ```json
+    {
+    "cicsia_example": {
+        "type": "cicsia",
+        "properties": {
+        "db2HostName": "replace-with-db2-host-name",
+        "db2Location": "replace-with-db2-location",
+        "db2PortNumber": "replace-with-db2-port-number",
+        "iaApiHostName": "replace-with-ia-rest-api-host-name",
+        "iaApiPortNumber": "replace-with-ia-rest-api-port-number",
+        "schema": "replace-with-db2-schema-name",
+        "name": "replace-with-existing-cics-profile",
+        "user": "replace-with-db2-username",
+        "password": "replace-with-db2-password",
+        "rejectUnauthorized": true
+        }
+    }
+    }
 
-- Once the IA profile is updated, again CICS IA view will start loading the data from the DB Schema (Schema details are configured on Rest API WebSphere server running on mainframe) and refreshes the tree hierarchy inside the updated CICS IA Profile.
+5. After you create a CICS IA profile, the CICS IA view will automatically begin loading data.
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/profile_home_page.png)
+
+## Delete CICS IA Profile 
+
+In Zowe Explorer, expand the CICS IA view and select the ‘+’ button in the existing CICS profile.
+- Select Manage CICS IA Profile.
+- Select Delete CICS IA Profile to open the configuration file.
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/delete_profile.png)
+
+- Edit the configuration file to remove the CICS IA profile entry.
+
+- Once the CICS IA profile is updated or deleted, again CICS IA view will start loading the data from the DB Schema and refreshes the tree hierarchy inside the updated CICS IA Profile.
+
+## CICS IA Collector View
+
+A new "**CICS IA COLLECTOR**" view will provide a hierarchical representation of your configured collectors and the CICS regions they monitor.
+
+**Connecting using CICS IA Collector Profiles**
+
+Similar to CICS IA and CICS profiles, CICS IA Collector profiles are stored with other Zowe profiles in team configuration JSON files.
+
+CICS IA collector profiles inherit properties from base profiles in the same way as Zowe profiles. Credentials are securely stored using the Zowe profile mechanism, with secure arrays and autoStore.
+
+<a name="_hlk208418687"></a>**Create or Update the CICS IA Profile**
+
+Execute the steps below to create or update the CICS IA Profile:
+
+1. In Zowe Explorer, select the ‘**+’** button in the CICS IA Collector tree.
+1. Select **Create a CICS IA Collector.**
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.001.png)
+
+1. Select <a name="_hlk208418947"></a>**Create a New Team Configuration File** or **Edit Team Configuration File** to create a new CICS IA Collector profile.
+
+![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.002.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.002.png))
+
+1. Add a new cicsiacollector profile type to the profile section of a team configuration file (zowe.config.json).\
+\
+   **Example:** The following example shows a CICS IA Collector profile stored in a configuration file. The host, port, and protocol in a CICS profile must point to a valid CICS IA Collector connection:
+
+    ```json
+    {
+        "collector121": {
+            "type": "cicsiacollector",
+            "properties": {
+                "name": "collector121",
+                "collectorHostName": "xxx.xxx.xxx.com",
+                "collectorPortNumber": "xxx",
+                "iaSecureConnection": false,
+                "user": "IATEST",
+                "password": "MJU00YHN",
+                "rejectUnauthorized": false
+            }
+        }
+    }
+    ```
+
+1. After creating the CICS IA Collector profile, the CICS IA Collector view will automatically begin loading the data. 
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.003.png)\
+
+   **Note:** It uses the connection details you provided in the profile to connect to the CICS collector.
+
+
+**Deleting CICS IA Collector Profile**
+
+1. In Zowe Explorer, right-click on the required CICS IA Collector profile.
+1. Select **Manage profile.**
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.004.png)
+
+
+1. Select **Delete CICS IA Collector Profile.**
+
+   ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.005.png)
+
+1. Edit the configuration file to remove the CICS IA Collector profile entry.
+
+**Manage CICS IA Collector**
+
+The **Manage CICS IA Collector** feature provides essential options to control and monitor the data collection process for a selected CICS region. When you right-click on a specific region (for example, *C63C3C08*), a context menu displays the following options:
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.006.png)
+
+
+**Continue Collector**: This command is used to resume a collection session that was previously paused.
+
+**Pause Collector**: This option temporarily suspends data collection. It's useful for stopping monitoring without ending the session, for example, during a maintenance window.
+
+**Start Collector**: Use this to begin a new data collection session for an inactive region. The collector will start monitoring transactions and resource access.
+
+**Stop Collector**: This command completely ends the current collection session. The collected data is finalized and stored, ready for analysis.
+
 ## CICS IA Profile
 CICS IA profile upon successful connection displays Green indicator icon over the profile name. If connection not successful, then displays Red indicator icon over the profile name. CICS IA profile on Successful connection extracts the Collected Dependency and Affinity data from the DB2 Schema to which REST API is configured. When CICS IA profile node is expanded, below child items are listed.
 
@@ -163,9 +307,9 @@ On expanding a desired collection ID tree node, **four** child items – Regions
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.016.png)
 
 - **Regions View:** Lists the CICS regions for which data has been collected under the selected Collection ID. For more information, see [REGIONS](#regions).
-- **Web services view:** Lists the web services known to the selected Collection ID.**  For more information, see [WEB SERVICES](#webservices)
-- **Transactions view:** Lists the Transactions known to the selected Collection ID.**  For more information, see [TRANSACTIONS](#transactions).
-- **Programs View:** Lists the Programs known to the selected Collection ID.**  For more information, see [PROGRAMS](#programs).
+- **Web services view:** Lists the web services known to the selected Collection ID.** For more information, see [WEB SERVICES](#webservices)
+- **Transactions view:** Lists the Transactions known to the selected Collection ID.** For more information, see [TRANSACTIONS](#transactions).
+- **Programs View:** Lists the Programs known to the selected Collection ID.** For more information, see [PROGRAMS](#programs).
 ## Regions
 CICS® region information that is collected by CICS IA is displayed when you expand **Regions** node under a Collection ID. Next to Regions text within brackets, a count of the regions used in the selected collection ID is displayed. 
 
@@ -182,6 +326,7 @@ The following menu options are available:
 - **Show Transient Data**. Displays the TDQUEUE resource types for the selected region in the [Show Resources view](#threadsafe-report-view) "The Show Resources view displays resources from a number of sources, including searches run from the toolbar, from the Queries view, and from the Regions view.".
 - **Program for API enablement.** Displays programs that don't have presentation logic and are suitable candidates for being exposed as an API for the selected region in the [Show Resources view](#threadsafe-report-view) "The Show Resources view displays resources from a number of sources, including searches run from the toolbar, from the Queries view, and from the Regions view.".
 - **Report** > **Threadsafe Report**. Create a report of threadsafe issues for the programs in the selected region and display report in the [Reports](#reports) "To create affinity reports, and build files of CICSPlex SM Workload Manager (WLM) transaction groups for input to CICSPlex SM expand Reports in the IA Navigation view. You can also manage saved affinity reports, threadsafe reports, and transaction group files ". You can select whether to generate report across all regions or a specific region. To generate report across all regions, click All Regions in the submenu. To generate report across a specific region, click Specific Region from the submenu, then select the required CICS region from the list displayed below the search bar.
+- **Report** > **Affinity Report**.. Create an affinity report for the regions you require and display the report in the [Reports](#reports)."You can select whether to generate report across all regions or a specific region. To generate report across all regions, select the regions that you require a report for and the affinity types that you require in the report.".
 - **Transactions Used**. Filters and Displays the transactions that are used in the selected region in the [Transactions](#transactions) node. And region for which Transactions are filtered is appended to the Transaction Node. To remove this filter, Click on the Resource filter icon ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.018.png) displayed at the end of Transaction node. 
 
   ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.019.png)
@@ -193,6 +338,11 @@ The following menu options are available:
 - **Web Services Used**. Filters and Displays the web services that are used in the selected region in the [Web Services](#webservices) "The Web Services view displays an alphabetic list of all web services known to CICS IA, both inbound and outbound." node. And region for which Web Services are filtered is appended to the Web Service Node. To remove this filter, Click on the Resource filter icon ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.018.png)displayed at the end of Web Services node.
 
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.021.png)
+
+- **Show Affinities by Type**. Select an affinity group type from the submenu to display the resources for the selected region that have potential affinities in the Affinities view.
+
+- **Visualization**. Display the programs and transactions in the selected region as groups in the Resource Usage Visualization view.
+
 ## Webservices 
 The Web Services node displays an alphabetic list of all web services known to CICS® IA Collection ID, both inbound and outbound. Next to Web Services text within brackets, a count of the web services used in the selected collection ID is displayed.
 
@@ -218,7 +368,7 @@ The Transactions Node shows an alphabetical list of all transactions known to�
 
 The list of transactions includes the transactions in which programs are running and transactions that are the results of interactions; that is, they are CICS resources of type TRANSID.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.024.png)
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/transaction_menus.png)
 ## Transactions Menu
 Expand **Transactions** node**.** Right-click the Transaction that you want to explore and choose an option from the menu. Use the menu to display more information about the selected Transaction. 
 
@@ -233,7 +383,14 @@ The following menu options are available:
 - **Show Affinities By Type.** Select an affinity group type from the submenu to display the resources for the selected Transaction that have potential affinities in the [Affinities view].
 - **Threadsafe Report.** Used to create a report of threadsafe issues for the selected Transaction. Threadsafe report will be saved under the REPORTS section of CICS IA profile. You can select whether to generate report across all regions or a specific region. To generate report across all regions, click All Regions in the submenu. To generate across a specific region, click Specific Region from the submenu, then select the required CICS region from the list displayed below the search bar. See [Creating a report of threadsafe issues](#creating-a-report-of-threadsafe-issues) for more information.
 
-  ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.025.png)
+- **Visualization**. To see a visual representation of programs and transactions as groups, right-click the transaction name then click Visualization. See [Resource Usage Visualization view](#resource-usage-visualization-view).
+
+- **Show Command Flow Runs**. The Show command flow runs feature provides diagnostic insights into the execution flow and resource usage of a specific transaction in the CICS environment.
+
+- **Show Program Flow Path**. The Show Program Flow Path feature, available in cics ia vs code extension Program Flows view, provides a detailed mapping of the sequence of programs executed for a specific transaction in a CICS environment
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/transaction_menus.png)
+
 ## Programs
 The Programs node shows an alphabetical list of all programs known to CICS® IA Collection ID. Next to Programs text within brackets, a count of the Programs used in selected collection ID is displayed.
 
@@ -259,7 +416,10 @@ The following menu options are available:
 - **Show Affinities By Type.** Select an affinity group type from the submenu to display the resources for the selected region that have potential affinities in the [Affinities view].
 - **Threadsafe Report.** Used to create a report of threadsafe issues for the selected Program. Threadsafe report will be saved under the REPORTS section of CICS IA profile. You can select whether to generate report across all regions or a specific region. To generate report across all regions, click All Regions in the submenu. To generate across a specific region, click Specific Region from the submenu, then select the required CICS region from the list displayed below the search bar. See [Creating a report of threadsafe issues](#creating-a-report-of-threadsafe-issues) for more information.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.027.png)
+- **Visualization**. To see a visual representation of programs and transactions as groups, right-click the transaction name then click Visualization. See [Resource Usage Visualization view](#resource-usage-visualization-view).
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/program_menus.png)
+
 ## User Command Flow
 When you expand **User Command Flow** Node under CICS IA profile tree Hierarchy, it displays a list of command flow runs which are sorted by user ID. 
 
@@ -267,7 +427,7 @@ Hover over the Side bar and expand the CICS IA profile node. Expand the **USER C
 
 To view a command flow that was run by a user, expand the required user ID. You can then expand the command flow to display further information. The time of the first command that is issued, and the transaction task ID are displayed. Before any transaction or program resource can be visualized from the User Command Flow Execution, interdependency data must first be collected for the transaction and loaded into the DB2 table.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.028.png)
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/command_flow_visualization.png)
 ## User Command Flow Menu
 Right-click on a transaction task ID and use the following menu options to show more information about a task in a command flow run:
 
@@ -275,6 +435,7 @@ Right-click on a transaction task ID and use the following menu options to show 
 - **Visualization**. Then, select from below options to display the command flow diagram for the selected transaction in the [Command Flow Diagram view](#command-flow-diagram-view) "The Command Flow Diagram view shows a timeline of the commands that the Command Flow Collector has collected. Commands are grouped by program, then displayed in rows or columns that represent the different platforms and applications, regions, or Task Control B".
   - **Application Switches**. Display the programs in rows or columns that represent the program and applications, with arrows to show the switches.
   - **Region Switches**. Display the programs in rows or columns that represent the regions, with arrows to show the switches.
+  - **TCB Switches**. Display the programs in rows or columns that represent the TCBs, with arrows to show the switches.
 ## Reports
 You can expand **Reports node** under CICS IA profile tree Hierarchy for the following functions:
 
@@ -318,16 +479,101 @@ Below the header, a toolbar is displayed with tools for
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.034.png) Collapse all resources in the view.
 
 You can recall the results of previous searches, and move between searches, by using the Previous search ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.035.png) and Next search ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.036.png)  icons in the toolbar of the view.  
+
+## Resource Usage Visualization View
+Use the Resource Usage Visualization view to display a visual representation of programs and transactions as groups.
+
+The Resource Usage Visualization view displays resources as containers that you can expand to show the child resources. It provides an alternative to the Show Resources view, where resources in a region are displayed in a list. 
+
+To open the Resource Usage Visualization view, right-click one of the following resources, then click Visualization:
+
+- Program. 
+- Region. After you click Visualization, click one of the following options, as required:
+    - By Transactions (All Regions)
+    - By Transactions (Selected Region)
+    - By CICS TS Applications (All Regions)
+    - By CICS TS Applications (Selected Region)
+
+- Transaction.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/regionVisualization.png)
+
+Each container in the Resource Usage Visualization view has a title with a resource name, an icon that represents the resource, and the number of child resources. By default, the resources are grouped by platforms, and then by applications. If you visualize a region by transactions, or if you are connected to a CICS® IA Version 5.1 or earlier database, the resources are grouped by regions, and then by applications.
+
+- **Toolbar**
+
+- **Swap top level elements** icon ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/swap_top_level_element.png). Change the current resource grouping. If you are connected to a CICS IA Version 5.2 or later database, change the resource grouping between grouping by applications then by platforms, and grouping by platforms then by applications. For visualization of a region by transactions, or if you are connected to an earlier version database, change the resource grouping between grouping by applications then by regions, and grouping by regions then by applications.
+- **Collapse all** icon ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/collapse_all.png). Collapse all the containers to the top level containers.
+- **Expand all** icon ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/expand_all.png). Expand all the containers in the editor.
+
+## Comparision of Resources
+The Comparison of CICS Resources feature within CICS IA now enables users to compare resources utilized by transactions across different or the same Collector IDs for a CICS application. This includes resources such as Programs, Transactions, Mapsets, Conditions, and Texts. The implementation displays all fetched resources in a CICS IA Comparison of CICS Resource view, presenting differences side by side in a VS Code extension interface for efficient analysis.
+
+Follow the steps below to compare the CICS resources:
+- Navigate to the CICS IA view.
+- Right-click on the required CICS IA profile node (e.g., hclctc3) and     select Compare CICS Resources.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_01.png)
+
+- The Comparison of CICS Resources view will open in the right-side panel.
+
+- Enter the Region ID, Collector ID, and Transaction ID for the Source and Target and select Continue.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_02.png)
+
+**Note:** You cannot compare identical configurations. The system checks for identical configurations. If all fields match, an error message ("You cannot compare the same transaction under the same collection ID") is displayed and disables the Continue button.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_03.png)
+
+- Use Reset to clear fields.
+
+- It starts collecting data, and the resources linked to the chosen transactions are displayed in separate views, as illustrated below.
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_04.png)
+
+The difference in the resources for the selected transactions is highlighted in a different color (RED) for better understanding, as shown in the image below.  
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_05.png)
+
+When the user selects Show similar resource toolbar, it filters the similar resource contents between the transactions, as shown in the image below.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_06.png)
+
+When the user selects the Show All resource toolbar, the filter is cleared, and the contents of all resources between the transactions are shown in the image below.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/comparision_of_res_07.png)
+
+## Program Flow Editor
+You can create a report of grouped program flows of a CICS TS Transaction that was collected by the Command Flow Collector.
+
+Users can display the Program flow editor by Right-click on a transaction and select Show program flow paths.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/pflow01.png)
+
+There are three fields in the Program Flows editor. Customize the fields to generate the report. 
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/pflow02.png)
+
+- **Command Flow ID** : This field defines the Command Flow ID for root tasks. You can use a fixed value or * (All) wildcards.
+- **Initial Region** : This field defines the initial region for root tasks. You can use a fixed value or * (All) wildcards.
+- **Transaction ID** : The name of the transaction to be investigated. You can only use a fixed value.
+
+Click the **Run** button to the right of the Transaction field to generate the report. The report usually takes some time to generate.
+
+The report is generated and the trees of program flows are displayed. Each item in a tree is called a node. There are two types of nodes: transaction and program nodes. If the nodes of any two trees have the same types, same orders, and same names, the two trees are put into the same group. Otherwise, the trees are divided into different groups. 
+
+The number to the right of the root program of a group shows the count of trees in this group. Nodes in a tree are sorted by execution time.
+
+
 ## Used By view
 From Region, transaction or program or web service node where a resource is available, you can view the programs or the transactions or the web service that are using the resource and the associated regions. 
 
 Use the Used By menu options to show the regions in which the program or transaction is being used. You can analyze the use of each program or transaction or web service across all regions or specific regions.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png)
+![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png))
 
 If you select one of the options in the Used By menu, information is displayed in the Used By view:
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png)
+![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png))
 
 The use tree of the resource is shown in the Used By view. The previous screen capture shows the uses of the program HCLMENU1.
 
@@ -379,6 +625,26 @@ The Affinities view includes 2 sections.
   - Resource, the affinity relation type, Lifetime of affinity or
   - Affinity relation type, Lifetime of affinity
 - Upon selection of an item in the upper section, the lower section displays the Transaction, Program and Command resulting in the selected affinity type.
+
+## Affinities Report view
+Use the Affinity Report view to view the contents of an affinity report. When you create an affinity report, it is displayed in the Affinity Report view. see [Creating an affinity report](#creating-a-report-of-threadsafe-issues). 
+
+If you use the Create Affinity Report wizard to create more than one affinity report, the first report is displayed in the Affinity Report view, and the additional report files are saved in the Report Explorer view.
+
+To view a saved report in the Affinity Report view, start from the Report Explorer view. Either double-click the report name, or right-click the report name, then click Open report.
+
+The Overview tab shows the region that the report was generated for, the date and time of the report, the report description, and the affinities that were found.
+
+The Transaction Groups tab shows the transaction group definitions that can be built into a CICSPlex® SM Workload Manager (WLM) transaction group file that can be deployed to CICSPlex SM.
+
+The following figures show an example of an affinity report.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/affinity_report_overview.png)
+
+TRANSACTION GROUP
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/affinity_report_transaction_group.png)
+
 ## Threadsafe Report view
 Use the Threadsafe Report view to view summary or detailed reports of threadsafe issues in HTML format.
 
@@ -442,7 +708,7 @@ The following example is a command flow diagram in vertical orientation that sho
 
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.055.png)
 ## Report Browser view 
-Use the Report Browser view to view the contents of saved threadsafe reports.
+Use the Report Browser view to view the contents of saved affinity and threadsafe reports.
 
 To view a saved report in the Report Browser view, start from the Report node under CICS IA Profile.
 
@@ -450,26 +716,31 @@ Hover Over the side bar and expand the CICS IA profile.
 
 Expand the REPORTS Node. 
 
-Navigate to the folder where the saved Threadsafe report exists.
+Navigate to the folder where the saved Affinity or Threadsafe report exists.
 
-Right click a threadsafe report and select **Open Report in Browser**.
+Right click a threadsafe or affinity report and select **Open Report in Browser**.
 
 For information about creating reports, see [Creating a report of threadsafe issues](#creating-a-report-of-threadsafe-issues "You can create summary or detailed reports of threadsafe issues in HTML format. To create a threadsafe report, you can use a view that shows the region, program, or transaction for which you require a report, or you can use the Report view."). 
+
+see [Creating an affinity report](#creating-an-affinity-report "You can create detailed affinity reports in HTML format"). 
 
 The following figure shows part of an example threadsafe report in the Report Browser view.
 
 ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.056.png)
+
+The following figure shows part of an example affinity report in the Report Browser view
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/affinity_report_in_browser.png)
 
 ## Creating a report of threadsafe issues
 You can create summary or detailed reports of threadsafe issues in HTML format. To create a threadsafe report, you can use a region, program, or transaction for which you require a report.
 
 To generate a report of threadsafe issues for a region, program, or transaction, you can select the required region, program, or transaction, then request a report for the selected region, program, or transaction. The report can then be opened from the Reports node.
 
-## Procedure
+## ThreadSafe Report Procedure
 
 1. To create a report for a specified region from the Regions Node, Expand the Collection ID and then Regions Node, right-click the region for which you want a threadsafe report, then click **Report** > **Threadsafe Report**. 
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.057.png)
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_threadsafe_report_wizard.png)
 
 1. To create a report for a specified program or transaction, use the following procedure:
    1. Expand the Collection ID and then the program or transaction node, right-click the program or transaction for which you want a threadsafe report and click **Threadsafe report**.
@@ -491,7 +762,7 @@ The wizard for creating the Threadsafe Report appears. Follow the wizard to crea
          ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.060.png)
 
 2. In the next page, select a folder to store the report, enter a name for the report in the Text box and click on Finish button to generate the report.
-         ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png)
+         ![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png))
 
 The generated report appears under the REPORTS node of the CICS IA profile. Refer [Reports](#reports) section to know how to view the threadsafe report.
 
@@ -501,3 +772,31 @@ The generated report appears under the REPORTS node of the CICS IA profile. Refe
 
 [Affinities view]: https://www.ibm.com/docs/en/SSGMCP_5.3.0/com.ibm.cics.ia.help/topics/concepts/affinities_view.html "The Affinities view displays an alphabetical list of resources with potential affinities related to the target object."
 [Creating a report of threadsafe issues]: https://www.ibm.com/docs/en/SSGMCP_5.3.0/com.ibm.cics.ia.help/topics/tasks/using_reports.html "You can create summary or detailed reports of threadsafe issues in HTML format. To create a threadsafe report, you can use a view that shows the region, program, or transaction for which you require a report, or you can use the Report view."
+
+## Creating an Affinity report
+You can create an affinity report in XML format for one or more regions, for one or more affinity types. To create an affinity report, you can use the Regions view. 
+
+To create an affinity report, you use the Create Affinity Report wizard. For each region that you select, you create a separate affinity report. 
+
+## Affinity Report Procedure
+1. To create a report for a specified region from the Regions Node, Expand the Collection ID and then Regions Node, right-click the region for which you want an affinity report, then click Report > Affinity Report.
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard.png)
+
+2. Select the regions that you require a report for, and the affinity types that you require in the report, then click Next. 
+The wizard displays the folder structure that is used for saved reports; that is, the folder structure that is used in the Report Explorer view.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step1.png)
+
+3. Specify the report location. You can select an existing folder or click New Folder and create a new folder.
+4. Enter the report name.
+5. To add a timestamp to the report name, select the Append a timestamp when saving check box.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step2.png)
+
+6. Optional: To add a report description, click Next then enter the required description.
+7. Click Finish. 
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step3.png)
+
+Report generation begins and a message is displayed in the Status bar. When generation is complete, the report is displayed in the Affinity Report view. The report file is also saved in a folder that shows the region name in the specified location in the Report Explorer view. If you create more than one affinity report, the first report is displayed in the Affinity Report view, and the additional report files are saved in the Report Explorer view
