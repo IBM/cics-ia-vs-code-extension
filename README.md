@@ -226,7 +226,7 @@ Execute the steps below to create or update the CICS IA Profile:
 
 1. Select <a name="_hlk208418947"></a>**Create a New Team Configuration File** or **Edit Team Configuration File** to create a new CICS IA Collector profile.
 
-![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.002.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.002.png))
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.002.png)
 
 1. Add a new cicsiacollector profile type to the profile section of a team configuration file (zowe.config.json).\
 \
@@ -251,7 +251,7 @@ Execute the steps below to create or update the CICS IA Profile:
 
 1. After creating the CICS IA Collector profile, the CICS IA Collector view will automatically begin loading the data. 
 
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.003.png)\
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/Aspose.Words.ca144599-db0d-4633-863a-bc5ad6a9731e.003.png)
 
    **Note:** It uses the connection details you provided in the profile to connect to the CICS collector.
 
@@ -496,7 +496,7 @@ To open the Resource Usage Visualization view, right-click one of the following 
 
 - Transaction.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/regionVisualization.png)
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/region_visualization.png)
 
 Each container in the Resource Usage Visualization view has a title with a resource name, an icon that represents the resource, and the number of child resources. By default, the resources are grouped by platforms, and then by applications. If you visualize a region by transactions, or if you are connected to a CICS® IA Version 5.1 or earlier database, the resources are grouped by regions, and then by applications.
 
@@ -551,7 +551,7 @@ Users can display the Program flow editor by Right-click on a transaction and se
 
 There are three fields in the Program Flows editor. Customize the fields to generate the report. 
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/pflow02.png)
+![](/docs/images/pflow02.png)
 
 - **Command Flow ID** : This field defines the Command Flow ID for root tasks. You can use a fixed value or * (All) wildcards.
 - **Initial Region** : This field defines the initial region for root tasks. You can use a fixed value or * (All) wildcards.
@@ -569,11 +569,11 @@ From Region, transaction or program or web service node where a resource is avai
 
 Use the Used By menu options to show the regions in which the program or transaction is being used. You can analyze the use of each program or transaction or web service across all regions or specific regions.
 
-![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png))
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.037.png)
 
 If you select one of the options in the Used By menu, information is displayed in the Used By view:
 
-![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png))
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.038.png)
 
 The use tree of the resource is shown in the Used By view. The previous screen capture shows the uses of the program HCLMENU1.
 
@@ -759,10 +759,11 @@ The wizard for creating the Threadsafe Report appears. Follow the wizard to crea
       1. **Program** or **Transaction** to report on commands collected for the named program or transaction. You can use a single asterisk character (\*) as a wildcard. 
       1. **Show detailed data** checkbox used to include details information in the threadsafe report. If not checked then summary threadsafe report will be generated.
 
-         ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.060.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.060.png)
 
 2. In the next page, select a folder to store the report, enter a name for the report in the Text box and click on Finish button to generate the report.
-         ![]([https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png))
+
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.061.png)
 
 The generated report appears under the REPORTS node of the CICS IA profile. Refer [Reports](#reports) section to know how to view the threadsafe report.
 
@@ -786,17 +787,17 @@ To create an affinity report, you use the Create Affinity Report wizard. For eac
 2. Select the regions that you require a report for, and the affinity types that you require in the report, then click Next. 
 The wizard displays the folder structure that is used for saved reports; that is, the folder structure that is used in the Report Explorer view.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step1.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step1.png)
 
 3. Specify the report location. You can select an existing folder or click New Folder and create a new folder.
 4. Enter the report name.
 5. To add a timestamp to the report name, select the Append a timestamp when saving check box.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step2.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step2.png)
 
 6. Optional: To add a report description, click Next then enter the required description.
 7. Click Finish. 
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step3.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_affinity_report_wizard_step3.png)
 
 Report generation begins and a message is displayed in the Status bar. When generation is complete, the report is displayed in the Affinity Report view. The report file is also saved in a folder that shows the region name in the specified location in the Report Explorer view. If you create more than one affinity report, the first report is displayed in the Affinity Report view, and the additional report files are saved in the Report Explorer view
