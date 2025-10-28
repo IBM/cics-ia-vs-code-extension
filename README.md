@@ -61,7 +61,7 @@ Ensure that you meet the following prerequisites before you use the extension:
 
 - Install VSCode 1.93.0 or earlier versions
 - Install Zowe Explorer v3
-- Install Zowe CICS Explorer v3
+- Install Zowe Explorer for IBM CICS Transaction Server v3
 - REST API preconfigured and running in the mainframe machine. Refer <https://www.ibm.com/support/pages/node/6378374> for REST API configuration for CICS IA.
 
 ## CICS IA Features
