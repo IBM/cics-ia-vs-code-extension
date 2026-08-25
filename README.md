@@ -61,11 +61,10 @@ Ensure that you meet the following prerequisites before you use the extension:
 
 - Install VSCode 1.93.0 or earlier versions
 - Install Zowe Explorer v3
-- Install Zowe Explorer for IBM CICS Transaction Server v3
-- REST API preconfigured and running in the mainframe machine. Refer <https://www.ibm.com/support/pages/node/6378374> for REST API configuration for CICS IA.
+- REST API preconfigured and running in the mainframe machine. Refer to CICS IA FIX Central.
+
 
 ## CICS IA Features
-- Load profiles directly from ZOWE CICS VS code extension.
 - Create new or Update existing Zowe CICS IA profiles and connect to them.
 - Identify Collection IDs for which dependency or affinity data has been collected under a CICS IA profile.
 - For every Collection ID, displays tree hierarchy of CICS resources like Regions, Programs, Transactions and Webservices.
@@ -78,10 +77,10 @@ Ensure that you meet the following prerequisites before you use the extension:
 - Analyse the Transaction and system Affinities from a Transaction or Programs and also lists the details about Program, transaction and Command causing the affinities.
 - View the execution details and timeline of Commands Collected by Command flow collector for a selected task.
 
-To Install CICS Extension for Zowe Explorer see [Installation](#installation "https://github.com/zowe/cics-for-zowe-client/blob/HEAD/docs/installation-guide.md")
+To Install CICS IA Extension for Zowe Explorer see [Installation](#installation "https://marketplace.visualstudio.com/items?itemName=IBM.cics-ia-extension-for-zowe#installation")
 
 ## Installation
-Users can install Zowe Explorer CICS IA Extension from a VSIX file.
+Users can install CICS IA Extension from a VSIX file.
 Execute the following steps to install the extension:
 - Download cics-ia-extension-for-zowe.vsix file to your PC.
 - Open VS Code and Click on the **Extensions** icon in the side bar.
@@ -139,29 +138,12 @@ The configuration is defined by an object with the following properties:
 
 Similar to other Zowe profiles, CICS IA profiles support inheritance. This means they can inherit common properties from a base profile, which reduces redundancy and ensures consistency across multiple configurations.
 
-## Loading CICS IA profiles from CICS profiles
-- By Default, CICS profiles from CICS VS Code extension is loaded into CICS IA View.
-- Find link for creating a new CICS profile Create CICS Profile
-    https://marketplace.visualstudio.com/items?itemName=Zowe.cics-extension-for-zowe#connecting-using-a-cics-profile
-
-- After Creating a new CICS Profile refresh CICS IA view, we should be able to see the newly created CICS profile getting loaded automatically under CICS IA view as well.
-
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.007.png)
-
-- The CICS IA tree view should show all the CICS profiles created in CICS Extension
-
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.008.png)
-
-*NOTE: If the CICS connection is failing with red indicator icon then that CICS profile should fail in the CICS IA view also.
-
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.009.png)
-
 ## Create or Update CICS IA Profile 
 
-1. In Zowe Explorer, expand the CICS IA view and select the ‘+’ button in the existing CICS profile.
-2. Select Manage CICS IA Profile.
+1. In Zowe Explorer, select the ‘+’ button in the CICS IA view.
+2. Select "Create a CICS IA Profile".
 
-    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/manage_profiles.png)
+    ![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/create_cics_profile.png)
 
 3. Select Create or Update CICS IA Profile.
 
@@ -175,18 +157,19 @@ Below is the example:
     "cicsia_example": {
         "type": "cicsia",
         "properties": {
-        "db2HostName": "replace-with-db2-host-name",
-        "db2Location": "replace-with-db2-location",
-        "db2PortNumber": "replace-with-db2-port-number",
-        "iaApiHostName": "replace-with-ia-rest-api-host-name",
-        "iaApiPortNumber": "replace-with-ia-rest-api-port-number",
-        "schema": "replace-with-db2-schema-name",
-        "name": "replace-with-existing-cics-profile",
-        "user": "replace-with-db2-username",
-        "password": "replace-with-db2-password",
-        "rejectUnauthorized": true
-        }
-    }
+           "db2HostName": "replace-with-db2-host-name",
+           "db2Location": "replace-with-db2-location",
+           "db2PortNumber": "replace-with-db2-port-number",
+           "iaApiHostName": "replace-with-ia-rest-api-host-name",
+           "iaApiPortNumber": "replace-with-ia-rest-api-port-number",
+           "schema": "replace-with-db2-schema-name",
+           "name": "replace-with-existing-cics-profile",
+           "user": "replace-with-db2-username",
+           "password": "replace-with-db2-password",
+           "rejectUnauthorized": true
+        },
+        "secure": []
+      }
     }
 
 5. After you create a CICS IA profile, the CICS IA view will automatically begin loading data.
@@ -206,6 +189,9 @@ In Zowe Explorer, expand the CICS IA view and select the ‘+’ button in the e
 - Once the CICS IA profile is updated or deleted, again CICS IA view will start loading the data from the DB Schema and refreshes the tree hierarchy inside the updated CICS IA Profile.
 
 ## CICS IA Collector View
+
+
+
 
 A new "**CICS IA COLLECTOR**" view will provide a hierarchical representation of your configured collectors and the CICS regions they monitor.
 
@@ -285,6 +271,18 @@ The **Manage CICS IA Collector** feature provides essential options to control a
 
 **Stop Collector**: This command completely ends the current collection session. The collected data is finalized and stored, ready for analysis.
 
+**Command flow collector**: To stop or start the command flow collector for your user ID, right-click your user ID and click Start Collector or Stop Collector, respectively.
+
+**Manage command flow collector**
+
+Use the below features to control the command flow collector. 
+
+**Start Collector**: Start the collector if it is stopped.
+
+**Stop Collector**: Stop the collector if it is running.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/command_flow_collector.png)
+
 ## CICS IA Profile
 CICS IA profile upon successful connection displays Green indicator icon over the profile name. If connection not successful, then displays Red indicator icon over the profile name. CICS IA profile on Successful connection extracts the Collected Dependency and Affinity data from the DB2 Schema to which REST API is configured. When CICS IA profile node is expanded, below child items are listed.
 
@@ -310,6 +308,30 @@ On expanding a desired collection ID tree node, **four** child items – Regions
 - **Web services view:** Lists the web services known to the selected Collection ID.** For more information, see [WEB SERVICES](#webservices)
 - **Transactions view:** Lists the Transactions known to the selected Collection ID.** For more information, see [TRANSACTIONS](#transactions).
 - **Programs View:** Lists the Programs known to the selected Collection ID.** For more information, see [PROGRAMS](#programs).
+## Delete Associated Data on Collection ID
+Use the Delete associated data context menu option to remove all dependency and interdependency data associated with a specific Collection ID from the Db2 database tables.
+
+To delete the associated data:
+- In the navigation pane, right-click the required Collection ID (for example, IATestapps or a custom Collection ID).
+- Select Delete associated data.
+- When the confirmation dialog is displayed, click Yes to proceed.
+
+After the operation completes, all dependency and interdependency data associated with the selected Collection ID are removed from the Db2 database tables.
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/delete_associate_data_collectionid.png)
+
+## Queries
+The Queries node contains a set of predefined queries provided with the CICS IA VS Code extension.
+
+To run a predefined query:
+- Expand the Queries node.
+- Right-click the required query.
+- Click Run Query.
+
+The query results are displayed in the Show Resources view. The name of the executed query is shown in the toolbar of the Show Resources view.
+ 
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/queries_run.png)
+
 ## Regions
 CICS® region information that is collected by CICS IA is displayed when you expand **Regions** node under a Collection ID. Next to Regions text within brackets, a count of the regions used in the selected collection ID is displayed. 
 
@@ -451,8 +473,15 @@ Use the menus in **Reports** to manage the folders and reports. Right-click th
 - **Open report**. Open the currently selected report or file in the appropriate view:
   - For a threadsafe report, open the Threadsafe Report view. See [Threadsafe Report view.](#threadsafe-report-view) "Use the Threadsafe Report view to view or create summary or detailed reports of threadsafe issues in HTML format." 
 - **Open in Browser**. Open the currently selected threadsafe report in the Report Browser view. See [Report Browser view](#report-browser-view) "Use the Report Browser view to view the contents of saved affinity or threadsafe reports.".
+- **Copy**. – Copies the selected report and makes it available to paste.
+- **Paste** – Pastes the copied report into the selected folder or into the folder that contains the selected report.
+- **Rename** – Renames the selected folder or report. If the report includes a timestamp, the timestamp is not modified.
+- **Delete** – Deletes the selected folder or report.
+- **Export** - Export 🡪 Export to HTML – Exports the selected Threadsafe or Affinity report to an HTML file.
 
-![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/CICSIA.Words.2521e191-aa0c-43da-8799-3d24aab9b5d3.030.png)
+
+![](https://github.com/IBM/cics-ia-vs-code-extension/raw/HEAD/docs/images/report_menu_options.png)
+
 ## Program details view
 The Program Details view shows the properties of a program in CICS® IA.
 
