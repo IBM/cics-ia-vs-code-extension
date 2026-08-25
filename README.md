@@ -10,12 +10,13 @@ CICS IA tool helps with runtime data collection for CICS Application. The CICS I
 - [Installation](#installation)
 - [Getting Started](#getting-started)
    - [Connecting using a CICS IA profile](#connecting-using-a-cics-ia-profile) 
-   - [Loading CICS IA profiles from CICS profiles](#loading-cics-ia-profiles-from-cics-profiles)
    - [Create or Update CICS IA Profile](#create-or-update-cics-ia-profile)
    - [Delete CICS IA Profile](#delete-cics-ia-profile)
 - [CICS IA Collector View](#cics-ia-collector-view)
 - [CICS IA Profile](#cics-ia-profile)
 - [Collection IDs](#collection-ids)
+- [Delete Associated Data on Collection ID](#delete-associated-data-on-collection-id)
+- [Queries](#queries)
 - [Regions](#regions)
     - [Regions Menu](#regions-menu)
 - [Webservices](#webservices)
@@ -76,6 +77,7 @@ Ensure that you meet the following prerequisites before you use the extension:
 - Create and view summary or detail report of Threadsafe issues for a specific Program or Transaction or Region.
 - Analyse the Transaction and system Affinities from a Transaction or Programs and also lists the details about Program, transaction and Command causing the affinities.
 - View the execution details and timeline of Commands Collected by Command flow collector for a selected task.
+- Drastically reduce navigation time by using natural language queries to retrieve CICS data and insights directly through the AI assistant
 
 To Install CICS IA Extension for Zowe Explorer see [Installation](#installation "https://marketplace.visualstudio.com/items?itemName=IBM.cics-ia-extension-for-zowe#installation")
 
